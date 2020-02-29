@@ -46,11 +46,11 @@
 
  
 	
-<!-- 	<bean name="requestContextListener" class="org.springframework.web.context.request.RequestContextListener"></bean> -->
+	<bean name="requestContextListener" class="org.springframework.web.context.request.RequestContextListener"></bean>
  
 
 	<bean name="employeeAspect"
-		class="com.testbean.aspect.EmployeeAspect">
+		class="com.testbean.aspect.EmployeeAspect" parent="requestContextListener">
 		<property name="name" ref="dynamicValue"></property>
 		</bean>
 
