@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans     
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<context:annotation-config />
+	<!-- PreDestroy -->
+	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+
+	<!-- Enable custom scope for thread -->
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+				<entry key="thread">
+					<bean class="org.springframework.context.support.SimpleThreadScope" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<aop:aspectj-autoproxy />
+
+ 
+	<!-- instantiate dynamic bean container -->
+	<bean name="var" class="com.testbean.model.DynamicName"
+		lazy-init="true" >
+<!-- 		<aop:scoped-proxy /> -->
+	</bean>
+
+	<bean name="dynamicValue" factory-method="getName"
+		factory-bean="var" lazy-init="true"  >
+	</bean>
+
+ 
+	
+<!-- 	<bean name="requestContextListener" class="org.springframework.web.context.request.RequestContextListener"></bean> -->
+ 
+
+	<bean name="employeeAspect"
+		class="com.testbean.aspect.EmployeeAspect">
+		<property name="name" ref="dynamicValue"></property>
+		</bean>
+
+	<aop:config>
+		<aop:aspect id="employeeAspect" ref="employeeAspect">
+			<aop:pointcut expression="execution(* getName())"
+				id="allGetters" />
+			<aop:around pointcut-ref="allGetters" method="testAdvice" />
+		</aop:aspect>
+	</aop:config>
+</beans> 
