@@ -1,4 +1,4 @@
-# repo: demo_springBeanScopes_logback
+# Repo: demo_springBeanScopes_logback
 project name: demo
 test:
   1. bean scopes (e.g. prototype, session, singleton)
