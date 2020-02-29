@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- <configuration debug="true" scan="true" scanPeriod="30 seconds"> <property 
-	name="LOG_PATH" value="logs" /> <property name="LOG_ARCHIVE" value="${LOG_PATH}/archive" 
-	/> <timestamp key="timestamp-by-second" datePattern="yyyyMMdd'T'HHmmss"/> 
-	<appender name="RollingFile-Appender" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
-	<file>${LOG_PATH}/rollingfile.log</file> <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
-	<fileNamePattern>${LOG_ARCHIVE}/rollingfile.%d{yyyy-MM-dd}.log </fileNamePattern> 
-	<maxHistory>30</maxHistory> <totalSizeCap>1MB</totalSizeCap> </rollingPolicy> 
-	<encoder> <pattern>%msg%n</pattern> </encoder> </appender> <logger name="com.testbean" 
-	level="info"> <appender-ref ref="File-Appender" /> </logger> <root> <appender-ref 
-	ref="Console-Appender" /> </root> </configuration> -->
+ 
 <configuration debug="true" scan="true"
 	scanPeriod="30 seconds">
 	<property name="LOG_PATH" value="logs" />
     <property name="LOG_ARCHIVE" value="${LOG_PATH}/archive" />
     <timestamp key="timestamp-by-second" datePattern="yyyyMMdd'T'HHmmss"/> 
 
-	<appender name="CONSOLE"
+	<appender name="writeToConsole"
 		class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<Pattern>
@@ -25,7 +15,7 @@
 		</layout>
 	</appender>
 
-	<appender name="File-Appender"
+	<appender name="writeToFile"
 		class="ch.qos.logback.core.FileAppender">
 		<file>${LOG_PATH}/logfile-${timestamp-by-second}.log</file>
 		<encoder>
@@ -35,11 +25,11 @@
 	</appender>
 
 	<logger name="com.testbean" level="debug" additivity="false">
-		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="writeToFile" />
 	</logger>
 
 	<root level="error">
-		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="writeToFile" />
 	</root>
 
 </configuration>
